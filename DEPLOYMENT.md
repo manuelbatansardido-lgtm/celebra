@@ -21,7 +21,7 @@
    - Import your GitHub repository
 
 3. **Configure Environment Variables**
-   In the Vercel project settings, add these environment variables:
+   In the Vercel project settings, add these environment variables. Keep any sensitive keys server-side (no `NEXT_PUBLIC_` prefix) where possible.
    
    ```
    NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
@@ -30,7 +30,7 @@
    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
    NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-   NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key
+   GEMINI_API_KEY=@gemini_api_key   # mapped to a Vercel secret (server-side only)
    ```
 
 4. **Deploy**
@@ -135,9 +135,23 @@
 
 ## Gemini API Setup
 
-1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Create a new API key
-3. Add it to your environment variables as `NEXT_PUBLIC_GEMINI_API_KEY`
+1. Go to the Google AI Studio or Google Cloud Console and create an API key for the Gemini (Generative AI) service.
+2. In Vercel, add the key as a secret (recommended) and then map it to the server env var `GEMINI_API_KEY`:
+
+Using Vercel Dashboard:
+
+- Settings → Secrets → Add Secret named `gemini_api_key` with the key value.
+- Settings → Environment Variables → Add `GEMINI_API_KEY` and set its value to `@gemini_api_key`.
+
+Using Vercel CLI:
+
+```powershell
+vercel secrets add gemini_api_key "<YOUR_GEMINI_API_KEY>"
+vercel env add GEMINI_API_KEY production
+# when prompted, use: @gemini_api_key
+```
+
+Important: Do NOT expose the Gemini API key to the client bundle (avoid `NEXT_PUBLIC_` prefix for this key). The server route `app/api/ai/generate/route.ts` reads `process.env.GEMINI_API_KEY` only.
 
 ## Update Authorized Domains
 

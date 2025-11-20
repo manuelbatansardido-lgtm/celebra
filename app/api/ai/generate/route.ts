@@ -24,9 +24,11 @@ export async function POST(req: Request) {
       finalPrompt = formatInstructions;
     }
 
-    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+    // Use a server-side-only environment variable for the Gemini API key.
+    // Avoid using NEXT_PUBLIC_* here so the key is not accidentally exposed to the browser.
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return NextResponse.json({ error: 'Missing Gemini API key in server environment' }, { status: 500 });
+      return NextResponse.json({ error: 'Server misconfiguration: Gemini API key missing' }, { status: 500 });
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
