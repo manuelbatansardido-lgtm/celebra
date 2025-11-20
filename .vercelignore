@@ -1,0 +1,43 @@
+# Ignore documentation and other non-deployment files
+# Keep repository full history locally, but exclude these from Vercel uploads
+
+# Markdown docs
+*.md
+docs/
+
+# Lint and build logs
+*.log
+build_log*
+lint_report*
+
+# Local env files and secrets
+.env
+.env.*
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Tests and tooling
+coverage/
+*.spec.*
+__tests__/
+
+# Misc large or helper files not needed in production
+*.ps1
+*.psm1
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+setup.ps1
+
+# Node modules (Vercel will install during build)
+node_modules/
+
+# ignore local artifacts
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
