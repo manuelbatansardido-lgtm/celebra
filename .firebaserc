@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "login-fe7a9",
+    "npm run dev": "get-game-67b92",
+    "celebra": "login-fe7a9"
+  },
+  "targets": {},
+  "etags": {}
+}
