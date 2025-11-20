@@ -7,6 +7,6 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_GEMINI_API_KEY": "@gemini_api_key"
+    "GEMINI_API_KEY": "@gemini_api_key"
   }
 }
