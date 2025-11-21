@@ -7,7 +7,8 @@ import {
     collection,
     query,
     getDocs,
-    addDoc,
+    doc,
+    setDoc,
     limit,
     Timestamp,
     where
