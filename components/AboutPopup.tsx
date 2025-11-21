@@ -23,7 +23,17 @@ export default function AboutPopup({ open: initialOpen = false }: { open?: boole
         <h2 className="text-lg font-bold mb-2">About Celebra</h2>
         <p className="text-sm text-gray-700 mb-4">Welcome to Celebra — a lightweight social app for sharing moments and connecting with friends.</p>
 
-        <div className="text-xs text-gray-500 mb-4">Developed by <span className="font-semibold">EYRON</span></div>
+        <div className="text-xs text-gray-500 mb-2">Developed by <span className="font-semibold">EYRON</span></div>
+        <div className="text-sm mb-4">
+          <a
+            href="https://www.facebook.com/eyron2k5/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            Developer Facebook — EYRON
+          </a>
+        </div>
 
         <div className="flex justify-end">
           <button
