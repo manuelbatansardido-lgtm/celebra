@@ -175,8 +175,12 @@ export default function Feed() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-600"></div>
+      <div className="max-w-2xl mx-auto px-4 py-6">
+        <CreatePost onPostCreated={handlePostCreated} />
+
+        <div className="mt-6 flex justify-center items-center h-40">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-600"></div>
+        </div>
       </div>
     );
   }
