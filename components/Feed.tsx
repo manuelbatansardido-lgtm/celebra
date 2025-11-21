@@ -35,7 +35,7 @@ export default function Feed() {
 
   const POSTS_PER_PAGE = 10;
 
-  const loadPosts = async (isInitial = true) => {
+  const loadPosts = useCallback(async (isInitial = true) => {
     if (!isInitial && !hasMore) return;
 
     try {
@@ -84,11 +84,11 @@ export default function Feed() {
       setLoading(false);
       setLoadingMore(false);
     }
-  };
+  }, [hasMore, lastDoc]);
 
   useEffect(() => {
     loadPosts(true);
-  }, []);
+  }, [loadPosts]);
 
   // Infinite scroll observer
   useEffect(() => {
@@ -110,7 +110,7 @@ export default function Feed() {
     return () => {
       if (observerRef.current) observerRef.current.disconnect();
     };
-  }, [hasMore, loadingMore]);
+  }, [hasMore, loadingMore, loadPosts]);
 
   const handlePostCreated = (newPost: Post) => {
     setPosts(prev => [newPost, ...prev]);
@@ -208,7 +208,7 @@ export default function Feed() {
 
       {!hasMore && posts.length > 0 && (
         <div className="text-center py-8 text-gray-500">
-          You've reached the end
+          You&apos;ve reached the end
         </div>
       )}
 

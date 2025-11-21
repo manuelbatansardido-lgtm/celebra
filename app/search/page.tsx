@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -17,7 +17,7 @@ import Image from 'next/image';
 import { FiUser, FiUserPlus, FiUserCheck } from 'react-icons/fi';
 import { doc, getDoc, setDoc, onSnapshot, Timestamp } from 'firebase/firestore';
 
-export default function SearchPage() {
+function SearchContent() {
   const { user: currentUser } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -27,20 +27,7 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(true);
   const [statuses, setStatuses] = useState<Record<string, { isFriend?: boolean; requestSent?: boolean }>>({});
 
-  useEffect(() => {
-    if (!currentUser) {
-      router.push('/');
-      return;
-    }
-
-    if (searchQuery) {
-      searchUsers();
-    } else {
-      setLoading(false);
-    }
-  }, [searchQuery, currentUser]);
-
-  const searchUsers = async () => {
+  const searchUsers = useCallback(async () => {
     if (!searchQuery.trim()) {
       setUsers([]);
       setLoading(false);
@@ -93,7 +80,20 @@ export default function SearchPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (!currentUser) {
+      router.push('/');
+      return;
+    }
+
+    if (searchQuery) {
+      searchUsers();
+    } else {
+      setLoading(false);
+    }
+  }, [searchQuery, currentUser, router, searchUsers]);
 
   const sendFriendRequest = async (targetUid: string) => {
     if (!currentUser) return;
@@ -160,7 +160,11 @@ export default function SearchPage() {
       <div className="max-w-4xl mx-auto px-4 py-6">
         <div className="bg-white rounded-lg shadow-md p-6">
           <h1 className="text-2xl font-bold mb-4">
-            {searchQuery ? `Search results for "${searchQuery}"` : 'Search'}
+            {searchQuery ? (
+              <>Search results for &ldquo;{searchQuery}&rdquo;</>
+            ) : (
+              'Search'
+            )}
           </h1>
 
           {loading ? (
@@ -170,7 +174,7 @@ export default function SearchPage() {
           ) : users.length === 0 ? (
             <div className="text-center py-12 text-gray-500">
               {searchQuery ? (
-                <p>No users found matching "{searchQuery}"</p>
+                <p>No users found matching &ldquo;{searchQuery}&rdquo;</p>
               ) : (
                 <p>Enter a search query to find users</p>
               )}
@@ -242,5 +246,19 @@ export default function SearchPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-600"></div>
+        </div>
+      }
+    >
+      <SearchContent />
+    </Suspense>
   );
 }

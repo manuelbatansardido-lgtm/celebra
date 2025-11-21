@@ -126,7 +126,6 @@ export default function MessagesPage() {
         behavior: smooth ? 'smooth' : 'auto'
       });
     }
-  const suppressAutoScrollRef = useRef(false);
   }, []);
 
   // Auto-scroll on new messages (ONLY if sent by me)

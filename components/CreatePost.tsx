@@ -5,7 +5,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Post } from '@/types';
-import { FiImage, FiSend } from 'react-icons/fi';
+import { FiSend } from 'react-icons/fi';
+import Image from 'next/image';
 
 interface CreatePostProps {
   onPostCreated: (post: Post) => void;
@@ -62,10 +63,12 @@ export default function CreatePost({ onPostCreated }: CreatePostProps) {
         <div className="flex items-start space-x-3">
           <div className="flex-shrink-0">
             {user?.photoURL ? (
-              <img
+              <Image
                 src={user.photoURL}
-                alt={user.displayName}
-                className="w-10 h-10 rounded-full"
+                alt={user.displayName || 'User avatar'}
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full object-cover"
               />
             ) : (
               <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">

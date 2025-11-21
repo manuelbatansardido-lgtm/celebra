@@ -6,8 +6,9 @@ import { Post } from '@/types';
 import { doc, setDoc, updateDoc, increment, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { formatDistanceToNow } from 'date-fns';
-import { FiHeart, FiMessageCircle, FiShare2, FiMoreVertical, FiTrash2, FiEdit } from 'react-icons/fi';
+import { FiHeart, FiMessageCircle, FiShare2, FiMoreVertical, FiTrash2 } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface PostCardProps {
   post: Post;
@@ -88,10 +89,12 @@ export default function PostCard({ post, onLike, onDelete, onShare }: PostCardPr
           onClick={() => router.push(`/profile/${post.userId}`)}
         >
           {post.photoURL ? (
-            <img
+            <Image
               src={post.photoURL}
-              alt={post.displayName}
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex-shrink-0"
+              alt={post.displayName || 'Post author'}
+              width={40}
+              height={40}
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex-shrink-0 object-cover"
             />
           ) : (
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">

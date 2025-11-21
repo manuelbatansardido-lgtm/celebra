@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import {
@@ -37,32 +37,7 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
 
   const isOwnProfile = currentUser?.uid === params.userId;
 
-  useEffect(() => {
-    loadProfileData();
-  }, [params.userId]);
-
-  // Realtime listeners for friend status and request status so UI updates immediately
-  useEffect(() => {
-    if (!currentUser || isOwnProfile) return;
-
-    const friendRef = doc(db, `users/${currentUser.uid}/friends`, params.userId);
-    const requestRef = doc(db, `users/${params.userId}/friendRequests`, currentUser.uid);
-
-    const unsubFriend = onSnapshot(friendRef, (snap) => {
-      setIsFriend(snap.exists());
-    }, (err) => console.error('Friend onSnapshot error:', err));
-
-    const unsubRequest = onSnapshot(requestRef, (snap) => {
-      setRequestSent(snap.exists());
-    }, (err) => console.error('Request onSnapshot error:', err));
-
-    return () => {
-      try { unsubFriend(); } catch (e) {}
-      try { unsubRequest(); } catch (e) {}
-    };
-  }, [currentUser, params.userId, isOwnProfile]);
-
-  const loadProfileData = async () => {
+  const loadProfileData = useCallback(async () => {
     try {
       // Load user profile
       const userDoc = await getDoc(doc(db, 'users', params.userId));
@@ -139,7 +114,33 @@ export default function ProfilePage({ params }: { params: { userId: string } }) 
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.userId, currentUser, isOwnProfile]);
+
+  useEffect(() => {
+    loadProfileData();
+  }, [loadProfileData]);
+
+  // Realtime listeners for friend status and request status so UI updates immediately
+  useEffect(() => {
+    if (!currentUser || isOwnProfile) return;
+
+    const friendRef = doc(db, `users/${currentUser.uid}/friends`, params.userId);
+    const requestRef = doc(db, `users/${params.userId}/friendRequests`, currentUser.uid);
+
+    const unsubFriend = onSnapshot(friendRef, (snap) => {
+      setIsFriend(snap.exists());
+    }, (err) => console.error('Friend onSnapshot error:', err));
+
+    const unsubRequest = onSnapshot(requestRef, (snap) => {
+      setRequestSent(snap.exists());
+    }, (err) => console.error('Request onSnapshot error:', err));
+
+    return () => {
+      try { unsubFriend(); } catch (e) {}
+      try { unsubRequest(); } catch (e) {}
+    };
+  }, [currentUser, params.userId, isOwnProfile]);
+
 
   const sendFriendRequest = async () => {
     if (!currentUser || !profileUser) return;

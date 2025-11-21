@@ -26,11 +26,6 @@ __tests__/
 # Misc large or helper files not needed in production
 *.ps1
 *.psm1
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.svg
 setup.ps1
 
 # Node modules (Vercel will install during build)
