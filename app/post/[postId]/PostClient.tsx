@@ -1,12 +1,4 @@
-export const runtime = 'edge';
-
-import PostClient from './PostClient';
-
-export default function Page({ params }: { params: { postId: string } }) {
-  return <PostClient postId={params.postId} />;
-}
 "use client";
-export const runtime = 'edge';
 
 import { useState, useEffect, useCallback } from 'react';
 import { FirebaseError } from 'firebase/app';
@@ -32,7 +24,7 @@ import Image from 'next/image';
 import { FiHeart, FiMessageCircle, FiShare2, FiSend } from 'react-icons/fi';
 import { formatDistanceToNow } from 'date-fns';
 
-export default function PostPage({ params }: { params: { postId: string } }) {
+export default function PostClient({ postId }: { postId: string }) {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [post, setPost] = useState<Post | null>(null);
@@ -41,8 +33,6 @@ export default function PostPage({ params }: { params: { postId: string } }) {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [commentError, setCommentError] = useState<string | null>(null);
-  const { postId } = params;
-
 
   const loadPost = useCallback(async () => {
     try {
