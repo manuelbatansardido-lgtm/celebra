@@ -87,8 +87,12 @@ export default function Feed() {
   }, [hasMore, lastDoc]);
 
   useEffect(() => {
+    // Load posts once on mount. The `loadPosts` function may change
+    // identity when pagination state updates which previously caused
+    // this effect to re-run repeatedly and trigger repeated loading.
     loadPosts(true);
-  }, [loadPosts]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Infinite scroll observer
   useEffect(() => {
