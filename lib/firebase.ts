@@ -5,12 +5,10 @@ import { getFirestore, enableMultiTabIndexedDbPersistence } from 'firebase/fires
 const firebaseConfig = {
   apiKey: "AIzaSyCmWXzxH0NBUPwCThios8d6fnO9kXC_WA0",
   authDomain: "login-fe7a9.firebaseapp.com",
-  databaseURL: "https://login-fe7a9-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "login-fe7a9",
   storageBucket: "login-fe7a9.firebasestorage.app",
   messagingSenderId: "131964224567",
-  appId: "1:131964224567:web:e24f7fd3518be836c86bb2",
-  measurementId: "G-0WHCSSG03C"
+  appId: "1:131964224567:web:e24f7fd3518be836c86bb2"
 };
 
 // Initialize Firebase
