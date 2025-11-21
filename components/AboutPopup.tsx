@@ -31,7 +31,7 @@ export default function AboutPopup({ open: initialOpen = false }: { open?: boole
             rel="noopener noreferrer"
             className="text-blue-600 hover:underline"
           >
-            Developer Facebook — EYRON
+            Visit Developer Facebook
           </a>
         </div>
 
