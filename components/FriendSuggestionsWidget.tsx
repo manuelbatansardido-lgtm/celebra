@@ -44,7 +44,8 @@ export default function FriendSuggestionsWidget({ maxSuggestions = 3 }: FriendSu
                     collection(db, `users/${user.uid}/friendRequests`),
                     where('status', '==', 'pending')
                 ));
-                const requestSenderIds = new Set(receivedRequestsSnap.docs.map(d => d.data().fromUserId));
+                // Support both legacy `fromUserId` and new `senderId` fields
+                const requestSenderIds = new Set(receivedRequestsSnap.docs.map(d => d.data().senderId || d.data().fromUserId));
 
                 // 3. Fetch users
                 // We fetch more than maxSuggestions because we might filter some out
@@ -78,8 +79,11 @@ export default function FriendSuggestionsWidget({ maxSuggestions = 3 }: FriendSu
         if (!user || addingFriend) return;
 
         setAddingFriend(targetUser.uid);
-        try {
-            await addDoc(collection(db, `users/${targetUser.uid}/friendRequests`), {
+            try {
+            // Use the sender's UID as the document ID so requests are unique
+            // and include `senderId` to satisfy Firestore security rules.
+            await setDoc(doc(db, `users/${targetUser.uid}/friendRequests`, user.uid), {
+                senderId: user.uid,
                 fromUserId: user.uid,
                 fromUsername: user.username,
                 fromDisplayName: user.displayName,
@@ -87,6 +91,7 @@ export default function FriendSuggestionsWidget({ maxSuggestions = 3 }: FriendSu
                 toUserId: targetUser.uid,
                 status: 'pending',
                 createdAt: Timestamp.now(),
+                id: user.uid,
             });
 
             toast.success(`Request sent to ${targetUser.displayName}`);
