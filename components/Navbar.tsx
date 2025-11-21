@@ -41,7 +41,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center cursor-pointer" onClick={() => router.push('/')}>
             <Image src={logo} alt="Celebra" width={40} height={40} className="rounded-md" />
-            <span className="ml-2 text-lg font-bold text-gray-900 hidden sm:inline">Celebra</span>
+            <span className="ml-2 text-lg font-bold text-gray-900">Celebra</span>
           </div>
 
           {/* Search Bar - Desktop */}
