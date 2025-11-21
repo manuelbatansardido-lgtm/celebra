@@ -9,6 +9,7 @@ import { RiRobot2Line } from 'react-icons/ri';
 import { useState } from 'react';
 
 import { useNotifications } from '@/contexts/NotificationContext';
+import AboutPopup from './AboutPopup';
 
 export default function Navbar() {
   const { user, signOut } = useAuth();
@@ -141,6 +142,11 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+
+            {/* About Popup Trigger */}
+            <div>
+              <AboutPopup />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -245,6 +251,10 @@ export default function Navbar() {
               </button>
 
               <hr className="my-2" />
+
+              <div className="px-2">
+                <AboutPopup />
+              </div>
 
               <button
                 onClick={() => {
